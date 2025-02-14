@@ -1,5 +1,3 @@
-
-
 <?php
 
 namespace App\Models;
@@ -38,7 +36,7 @@ class CostCenter extends Model
 
     public function calculateAllocation($totalAmount)
     {
-        return match($this->allocation_method) {
+        return match ($this->allocation_method) {
             'fixed_percentage' => $totalAmount * ($this->allocation_base / 100),
             'headcount' => $totalAmount * ($this->getHeadcount() / $this->getTotalHeadcount()),
             'direct_labor_hours' => $totalAmount * ($this->getDirectLaborHours() / $this->getTotalDirectLaborHours()),
