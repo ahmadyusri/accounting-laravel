@@ -12,7 +12,9 @@ return new class extends Migration
     {
         Schema::create('time_entries', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
+            $table->foreignId('customer_id');
+            $table->foreignId('customer_id')->constrained('customers', 'customer_id')->onDelete('cascade');
+            $table->foreignId('invoice_id')->constrained('invoices', 'invoice_id')->onDelete('set null');
             $table->integer('invoice_id')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
@@ -20,9 +22,6 @@ return new class extends Migration
             $table->decimal('hourly_rate', 10, 2);
             $table->decimal('total_amount', 10, 2);
             $table->timestamps();
-
-            $table->foreign('customer_id')->references('customer_id')->on('customers')->onDelete('cascade');
-            $table->foreign('invoice_id')->references('invoice_id')->on('invoices')->onDelete('set null');
         });
     }
 
