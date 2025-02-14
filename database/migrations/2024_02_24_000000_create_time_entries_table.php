@@ -12,10 +12,8 @@ return new class extends Migration
     {
         Schema::create('time_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id');
             $table->foreignId('customer_id')->constrained('customers', 'customer_id')->onDelete('cascade');
             $table->foreignId('invoice_id')->constrained('invoices', 'invoice_id')->onDelete('set null');
-            $table->integer('invoice_id')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->text('description');
