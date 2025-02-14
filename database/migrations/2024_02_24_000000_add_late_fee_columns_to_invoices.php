@@ -14,14 +14,13 @@ return new class extends Migration
             $table->decimal('late_fee_percentage', 5, 2)->default(0);
             $table->integer('grace_period_days')->default(0);
             $table->decimal('late_fee_amount', 10, 2)->default(0);
-            $table->date('due_date')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn(['late_fee_percentage', 'grace_period_days', 'late_fee_amount', 'due_date']);
+            $table->dropColumn(['late_fee_percentage', 'grace_period_days', 'late_fee_amount']);
         });
     }
 };
