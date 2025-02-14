@@ -28,7 +28,7 @@ class Invoice extends Model
         "recurrence_frequency",
         "recurrence_start",
         "recurrence_end",
-        "last_generated"
+        "last_generated",
         "approval_status",
         "rejection_reason",
         "approved_by",
@@ -45,7 +45,7 @@ class Invoice extends Model
         'is_recurring' => 'boolean',
         'recurrence_start' => 'date',
         'recurrence_end' => 'date',
-        'last_generated' => 'date'
+        'last_generated' => 'date',
         'approved_at' => 'datetime',
     ];
 
@@ -81,13 +81,13 @@ class Invoice extends Model
 
         $baseAmount = $this->total_amount;
         $previousTaxes = 0;
-        
+
         if ($this->taxRate->is_compound) {
             // Get all non-compound taxes first
             $nonCompoundTaxes = TaxRate::where('is_active', true)
                 ->where('is_compound', false)
                 ->get();
-                
+
             foreach ($nonCompoundTaxes as $tax) {
                 $previousTaxes += $tax->calculateTax($baseAmount);
             }
@@ -117,7 +117,7 @@ class Invoice extends Model
             'vendor' => $this->vendor,
             'tax_rate' => $this->taxRate,
         ];
-        
+
         $pdf = PDF::loadView('invoices.template', $data);
         return $pdf->download('invoice_' . $this->invoice_number . '.pdf');
     }
@@ -138,7 +138,7 @@ class Invoice extends Model
         $this->save();
     }
 
-    private function shouldGenerateNew(): bool 
+    private function shouldGenerateNew(): bool
     {
         if ($this->recurrence_end && $this->recurrence_end < now()) {
             return false;
@@ -151,14 +151,16 @@ class Invoice extends Model
     private function getNextDate(): Carbon
     {
         $lastDate = $this->last_generated ?? $this->recurrence_start;
-        
-        return match($this->recurrence_frequency) {
+
+        return match ($this->recurrence_frequency) {
             'daily' => $lastDate->addDay(),
             'weekly' => $lastDate->addWeek(),
             'monthly' => $lastDate->addMonth(),
             'yearly' => $lastDate->addYear(),
             default => $lastDate
         };
+    }
+
     public function approve()
     {
         $this->update([
@@ -190,7 +192,7 @@ class Invoice extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($invoice) {
             if (empty($invoice->invoice_number)) {
                 $invoice->invoice_number = 'INV-' . str_pad(static::max('invoice_id') + 1, 6, '0', STR_PAD_LEFT);
