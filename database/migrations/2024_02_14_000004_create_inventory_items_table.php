@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal('unit_price', 15, 2);
             $table->integer('current_quantity')->default(0);
             $table->integer('reorder_point')->default(0);
-            $table->foreignId('account_id')->constrained('accounts');
-            $table->foreignId('category_id')->nullable()->constrained('categories');
+            $table->foreignId('account_id')->constrained('accounts', 'account_id');
+            $table->foreignId('category_id')->nullable()->constrained('categories', 'category_id');
             $table->enum('valuation_method', ['fifo', 'lifo', 'average'])->default('fifo');
             $table->decimal('average_cost', 15, 2)->nullable();
             $table->boolean('is_active')->default(true);
