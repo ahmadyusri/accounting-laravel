@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('inventory_cost_layers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_item_id')->constrained('inventory_items');
+            $table->foreignId('inventory_item_id')->constrained('inventory_items', 'inventory_item_id');
             $table->integer('quantity');
             $table->decimal('unit_cost', 15, 2);
             $table->date('purchase_date');

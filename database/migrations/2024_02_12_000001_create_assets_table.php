@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->bigInteger('asset_id')->unsigned()->primary();
+            $table->id('asset_id');
             $table->string('asset_name');
             $table->decimal('asset_cost', 10, 2);
             $table->integer('useful_life_years');

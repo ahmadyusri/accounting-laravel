@@ -12,13 +12,13 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id('invoice_id');
-            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('customer_id')->constrained('customers', 'customer_id');
             $table->string('invoice_number')->unique();
             $table->date('invoice_date');
             $table->date('due_date')->nullable();
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->decimal('tax_amount', 10, 2)->default(0);
-            $table->foreignId('tax_rate_id')->nullable()->constrained('tax_rates');
+            $table->foreignId('tax_rate_id')->nullable()->constrained('tax_rates', 'tax_rate_id');
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();
