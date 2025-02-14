@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained()->onDelete('cascade');
+            $table->foreignId('account_id')->constrained('accounts', 'account_id')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('planned_amount', 15, 2);
