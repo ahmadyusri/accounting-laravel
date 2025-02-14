@@ -76,8 +76,8 @@ class ReminderSettingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListRecords::route('/'),
-            'edit' => EditRecord::route('/{record}/edit'),
+            'index' => Pages\ListReminderSettings::route('/'),
+            'edit' => Pages\EditReminderSetting::route('/{record}/edit'),
         ];
     }
 }
